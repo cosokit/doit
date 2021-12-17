@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "types": [
+      "vuetify",
+      "webpack-env",
+      "jest"
+    ],
+    "paths": {
+      "@/*": [
+        "webview/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "extends": "@tsconfig/svelte/tsconfig.json",
+  "include": ["webview/**/*"],
+  "exclude": ["node_modules/*", "webview/public/*"]
+}
