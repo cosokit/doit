@@ -16,6 +16,7 @@ func main() {
 	configs.InitDoit(dir, filename, "yaml")
 
 	wndcore.MainWindow = wndcore.New("doit", 1200, 900, ResourcesPath, true)
+
 	defer wndcore.MainWindow.Destroy()
 
 	wndcore.MainWindow.Run()

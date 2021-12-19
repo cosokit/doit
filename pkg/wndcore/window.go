@@ -2,10 +2,12 @@ package wndcore
 
 import (
 	"github.com/cosokit/doit/pkg/comm/utils"
+	"github.com/cosokit/doit/pkg/wndcore/custom"
 	"github.com/webview/webview"
 	"net/http"
 	"runtime"
 	"time"
+	"unsafe"
 )
 
 type DTWnd struct {
@@ -36,12 +38,17 @@ func New(title string, w, h int, assets string, debug bool) *DTWnd {
 		}
 	}()
 
+	view.SetTitle(title)
 	view.SetSize(w, h, webview.HintNone)
+	view.Navigate("http://localhost")
+
 	if runtime.GOOS == "windows" {
 		title = utils.ConvertTo(title, "gbk")
+	} else if runtime.GOOS == "darwin" {
+		// MACOSX系统设置窗体边框和阴影
+		wnd := custom.NSWindow{Ptr: view.Window()}
+		wnd.SetHasShadow(true)
 	}
-	view.SetTitle(title)
-	view.Navigate("http://localhost")
 
 	return &DTWnd{view: view, assets: assets}
 }
@@ -68,4 +75,13 @@ func (wnd *DTWnd) Run() {
 // 在webview页面中执行一段JS
 func (wnd *DTWnd) Eval(js string) {
 	c <- js
+}
+
+// WndPtr
+// 获取主窗口的窗口句柄
+// When using GTK backend the pointer is GtkWindow pointer
+// when using Cocoa backend the pointer is NSWindow pointer
+// when using Win32 backend the pointer is HWND pointer
+func (wnd *DTWnd) WndPtr() unsafe.Pointer {
+	return wnd.view.Window()
 }
